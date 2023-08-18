@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Astrology App Result</title>
+</head>
+<body>
+    <h1>Результаты</h1>
+    
+    <h2>Градусы планет</h2>
+    <ul>
+        {% for planet_name, degree in planet_degrees.items() %}
+            <li>{{ planet_name }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Placidus)</h2>
+    <ul>
+        {% for degree in house_degrees_placidus %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Koch)</h2>
+    <ul>
+        {% for degree in house_degrees_koch %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Porphyry)</h2>
+    <ul>
+        {% for degree in house_degrees_porphyry %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Regiomontanus)</h2>
+    <ul>
+        {% for degree in house_degrees_regiomontanus %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Campanus)</h2>
+    <ul>
+        {% for degree in house_degrees_campanus %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Equal)</h2>
+    <ul>
+        {% for degree in house_degrees_equal %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Градусы домов (Whole Sign)</h2>
+    <ul>
+        {% for degree in house_degrees_whole_sign %}
+            <li>Дом {{ loop.index }}: {{ degree }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
