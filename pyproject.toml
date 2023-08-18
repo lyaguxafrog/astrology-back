@@ -7,12 +7,11 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-flask = "2.0.1"
-geopy = "2.2.0,"
-ephem = "4.0.0.2"
-jinja2 = "3.0.1,"
-flask-testing = "0.8.1"
+python = "^3.8"
+flask = "^2.0.1"
+geopy = "^2.2.0"
+ephem = "^4.0.0"
+flask-bootstrap = "^3.3.7.1"
 
 
 
