@@ -12,7 +12,7 @@ class AstrologyAppTestCase(unittest.TestCase):
     def test_index_page(self):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Введите данные для расчета', response.data.decode())  # Измените на соответствующий текст
+        self.assertIn('Введите данные для расчета', response.data.decode())
 
     def test_valid_form_submission(self):
         response = self.app.post('/', data={
@@ -24,7 +24,13 @@ class AstrologyAppTestCase(unittest.TestCase):
         self.assertIn('Результаты', response.data.decode())
         self.assertIn('Градусы планет', response.data.decode())
         self.assertIn('Градусы домов (Placidus)', response.data.decode())
-        # Добавьте проверки для других систем домов
+        self.assertIn('Градусы домов (Koch)', response.data.decode())
+        self.assertIn('Градусы домов (Equal)', response.data.decode())
+        self.assertIn('Градусы домов (Porphyry)', response.data.decode())
+        self.assertIn('Градусы домов (Regiomontanus)', response.data.decode())
+        self.assertIn('Градусы домов (Campanus)', response.data.decode())
+        self.assertIn('Градусы домов (Whole Sign)', response.data.decode())
+        
 
     def test_invalid_location_submission(self):
         response = self.app.post('/', data={

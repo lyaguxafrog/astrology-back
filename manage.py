@@ -12,4 +12,5 @@ if __name__ == '__main__':
         else:
             sys.exit(1)
     else:
-        app.run(debug=True)
+        if __name__ == '__main__':
+            app.run(debug=True)
