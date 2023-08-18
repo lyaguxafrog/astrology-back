@@ -5,9 +5,7 @@ import ephem
 from app import app
 
 from app.services.planet_calculator import calculate_planet_degrees
-from app.services.house_calculators import (
-    placidus, koch, equal, porphyry, regiomontanus, campanus, whole_sign
-)
+from app.services.house_calculators import placidus, koch, equal, porphyry, regiomontanus, campanus, whole_sign
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -18,8 +16,7 @@ def index():
 
         geolocator = Nominatim(user_agent="astrology_app")
         location = geolocator.geocode(location_name)
-
-        if not location:
+        if location is None:
             error_message = "Место не найдено. Пожалуйста, введите допустимое местоположение."
             return render_template('input.html', error_message=error_message)
 
@@ -29,19 +26,25 @@ def index():
 
         planet_degrees = calculate_planet_degrees(obs)
 
-        house_systems = [
-            ('Placidus', placidus.calculate_placidus_degrees),
-            ('Koch', koch.calculate_koch_degrees),
-            ('Equal', equal.calculate_equal_degrees),
-            ('Porphyry', porphyry.calculate_porphyry_degrees),
-            ('Regiomontanus', regiomontanus.calculate_regiomontanus_degrees),
-            ('Campanus', campanus.calculate_campanus_degrees),
-            ('Whole Sign', whole_sign.calculate_whole_sign_degrees)
-        ]
+        house_degrees_placidus = placidus.calculate_placidus_degrees(obs)
+        house_degrees_koch = koch.calculate_koch_degrees(obs)
+        house_degrees_equal = equal.calculate_equal_degrees(obs)
+        house_degrees_porphyry = porphyry.calculate_porphyry_degrees(obs)
+        house_degrees_regiomontanus = regiomontanus.calculate_regiomontanus_degrees(obs)
+        house_degrees_campanus = campanus.calculate_campanus_degrees(obs)
+        house_degrees_whole_sign = whole_sign.calculate_whole_sign_degrees(obs)
 
-        house_degrees = {system_name: calculate_fn(obs) for system_name, calculate_fn in house_systems}
-
-        return render_template('result.html', planet_degrees=planet_degrees, house_degrees=house_degrees)
+        return render_template('result.html', planet_degrees=planet_degrees,
+                               house_degrees_placidus=house_degrees_placidus,
+                               house_degrees_koch=house_degrees_koch,
+                               house_degrees_equal=house_degrees_equal,
+                               house_degrees_porphyry=house_degrees_porphyry,
+                               house_degrees_regiomontanus=house_degrees_regiomontanus,
+                               house_degrees_campanus=house_degrees_campanus,
+                               house_degrees_whole_sign=house_degrees_whole_sign
+                               )
     
     return render_template('input.html')
 
+if __name__ == '__main__':
+    app.run(debug=True)
