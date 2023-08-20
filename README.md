@@ -47,7 +47,7 @@ astrology-back/
 │   │   ├── input.html
 │   │   ├── result.html
 │   ├── __init__.py
-│   ├── app.py
+│   ├── author.py
 │   ├── routes.py
 │
 ├── tests/
