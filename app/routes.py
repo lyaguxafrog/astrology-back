@@ -7,7 +7,7 @@ from app import app
 from app.services.report import astr_report
 
 load_dotenv(find_dotenv())
-app.secret_key = '_5oIrxW61I_NOuWi35buGg'
+app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
