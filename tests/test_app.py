@@ -50,7 +50,7 @@ class TestAstrologicalReport(unittest.TestCase):
         )
         report_output = astr_report('Адриан', 2010, 10, 10, 10, 10, 'Москва')
         
-        # Strip whitespace and replace multiple spaces with single space
+
         expected_output_cleaned = expected_output.strip().replace(' +', '+')
         report_output_cleaned = report_output.strip().replace(' +', '+')
         

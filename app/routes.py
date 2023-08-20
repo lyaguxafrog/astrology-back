@@ -20,15 +20,15 @@ def index():
         minute = int(request.form['minute'])
         city = request.form['city']
         
-        result_text = astr_report(name, year, month, day, hour, minute, city)  # Получаем текст отчета
-        session['result_text'] = result_text  # Сохраняем текст отчета в сессии
-        print("Result text stored in session")  # Выводим результат в консоль
+        result_text = astr_report(name, year, month, day, hour, minute, city) 
+        session['result_text'] = result_text 
+        print("Result text stored in session")
         return redirect(url_for('result'))
     
     return render_template('index.html')
 
 @app.route('/result')
 def result():
-    result_text = session.get('result_text')  # Получаем текст отчета из сессии
-    print("Result text retrieved from session:", result_text)  # Выводим результат в консоль
-    return render_template('result.html', result_text=result_text)  # Передаем текст отчета в шаблон
+    result_text = session.get('result_text')
+    print("Result text retrieved from session:", result_text)
+    return render_template('result.html', result_text=result_text)
