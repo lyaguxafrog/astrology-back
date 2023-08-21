@@ -1,6 +1,7 @@
+# app/services/houses.py
 import swisseph as swe
 
-from juilean_convert import get_julian_datetime
+from app.services.time_convert import get_julian_datetime
 
 
 def get_house(year: int, month: int, day: int, hour: int, minute: int,
@@ -20,9 +21,11 @@ def get_house(year: int, month: int, day: int, hour: int, minute: int,
     :returns: Координаты в выбранной системе домов
     """
     
-    date = get_julian_datetime(year, month, day, hour, minute)
+    date = get_julian_datetime(year=year, month=month, day=day,
+                                hour=hour, minute=minute)
     
-    house_cup = swe.houses_ex(tjdut=date, lat=latitude, lon=longitude, hsys=house, flags=0)
+    house_cup = swe.houses_ex(tjdut=date, lat=latitude,
+                               lon=longitude, hsys=house, flags=0)
 
     return house_cup
 

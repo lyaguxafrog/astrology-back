@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Birth Chart</title>
+    <title>Астрологическое приложение</title>
 </head>
 <body>
-    <h1>Birth Chart</h1>
-    
-    <form method="POST">
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
+    <h1>Введите данные для расчета</h1>
+    <form action="/" method="post">
+        <label for="year">Год:</label>
+        <input type="number" id="year" name="year" required><br><br>
         
-        <label for="year">Year:</label>
-        <input type="number" name="year" required><br>
+        <label for="month">Месяц:</label>
+        <input type="number" id="month" name="month" required><br><br>
         
-        <label for="month">Month:</label>
-        <input type="number" name="month" required><br>
+        <label for="day">День:</label>
+        <input type="number" id="day" name="day" required><br><br>
         
-        <label for="day">Day:</label>
-        <input type="number" name="day" required><br>
+        <label for="hour">Час:</label>
+        <input type="number" id="hour" name="hour" required><br><br>
         
-        <label for="hour">Hour:</label>
-        <input type="number" name="hour" required><br>
+        <label for="minute">Минута:</label>
+        <input type="number" id="minute" name="minute" required><br><br>
         
-        <label for="minute">Minute:</label>
-        <input type="number" name="minute" required><br>
+        <label for="place">Место:</label>
+        <input type="text" id="place" name="place" required><br><br>
+        <label for="timezone">Часовой пояс:</label>
+        <select id="timezone" name="timezone" required>
+            <option value="UTC-12:00">UTC-12:00</option>
+            <option value="UTC-11:00">UTC-11:00</option>
+            <option value="UTC-10:00">UTC-10:00</option>
+            <option value="UTC-09:00">UTC-09:00</option>
+            <option value="UTC-08:00">UTC-08:00</option>
+            <option value="UTC-07:00">UTC-07:00</option>
+            <option value="UTC-06:00">UTC-06:00</option>
+            <option value="UTC-05:00">UTC-05:00</option>
+            <option value="UTC-04:00">UTC-04:00</option>
+            <option value="UTC-03:00">UTC-03:00</option>
+            <option value="UTC-02:00">UTC-02:00</option>
+            <option value="UTC-01:00">UTC-01:00</option>
+            <option value="UTC±00:00">UTC±00:00</option>
+            <option value="UTC+01:00">UTC+01:00</option>
+            <option value="UTC+0:002">UTC+02:00</option>
+            <option value="UTC+03:00">UTC+03:00</option>
+            <option value="UTC+04:00">UTC+04:00</option>
+            <option value="UTC+05:00">UTC+05:00</option>
+            <option value="UTC+06:00">UTC+06:00</option>
+            <option value="UTC+07:00">UTC+07:00</option>
+            <option value="UTC+08:00">UTC+08:00</option>
+            <option value="UTC+09:00">UTC+09:00</option>
+            <option value="UTC+10:00">UTC+10:00</option>
+            <option value="UTC+11:00">UTC+11:00</option>
+            <option value="UTC+12:00">UTC+12:00</option>
+        </select><br><br>
         
-        <label for="city">City:</label>
-        <input type="text" name="city" required><br>
-        
-        <input type="submit" value="Submit">
+        <input type="submit" value="Рассчитать">
     </form>
-    
-    {% if result %}
-    <h2>Birth Chart Result:</h2>
-    <pre>{{ result }}</pre>
-    {% endif %}
 </body>
-</html>
+</html

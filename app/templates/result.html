@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Result Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrology Results</title>
 </head>
 <body>
-    <h1>Report Result</h1>
-    <pre>{{ result_text }}</pre>
+    <h1>Результаты расчетов</h1>
+    
+    <h2>Позиции планет:</h2>
+    {% for planet_position in planet_positions %}
+        <p>Планета ID: {{ planet_position.planet_id }} - Градус: {{ planet_position.longitude }}</p>
+    {% endfor %}
+    
+    <h2>Информация о домах:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Система домов</th>
+                <th>Имя дома</th>
+                <th>Координаты дома</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for house_info in houses_info %}
+                <tr>
+                    <td>{{ house_info.system }}</td>
+                    <td>{{ house_info.name }}</td>
+                    <td>{{ house_info.house_info }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
