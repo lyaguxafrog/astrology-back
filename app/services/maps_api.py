@@ -36,8 +36,12 @@ def extract_point_from_json(json_data):
     :returns: Значение 'Point' как строку
     """
     try:
-        point = json_data['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos']
-        return point
+        feature_member = json_data['response']['GeoObjectCollection']['featureMember']
+        if feature_member:
+            point = feature_member[0]['GeoObject']['Point']['pos']
+            return point
+        else:
+            return None
     except KeyError:
         return None
 
