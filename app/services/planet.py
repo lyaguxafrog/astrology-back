@@ -1,5 +1,6 @@
 # app/services/planet.py
 import swisseph as swe
+
 import os
 from dotenv import load_dotenv, find_dotenv
 
@@ -9,7 +10,7 @@ load_dotenv(find_dotenv())
 # Установка пути к эфемеридам
 swe.set_ephe_path(os.getenv('EPH_PATH'))
 
-def get_planets(hour: int, day: int, month: int, year: int):
+def calculate_planet_position(hours: int, day: int, month: int, year: int, planet_id):
     """
     Получение данных о планетах по времени
 
@@ -20,26 +21,47 @@ def get_planets(hour: int, day: int, month: int, year: int):
 
     :returns: Список всех планет
     """
+
+    planet_names = {
+    swe.SUN: "Sun",
+    swe.MOON: "Moon",
+    swe.MERCURY: "Mercury",
+    swe.VENUS: "Venus",
+    swe.MARS: "Mars",
+    swe.JUPITER: "Jupiter",
+    swe.SATURN: "Saturn",
+    swe.URANUS: "Uranus",
+    swe.NEPTUNE: "Neptune",
+    swe.PLUTO: "Pluto",
+    swe.MEAN_NODE: "Mean Node",
+    swe.TRUE_NODE: "True Node"
+}
+
     # Вычисляем юлианскую дату в терминах эфемеридного времени (ET)
-    jd_et = swe.julday(year, month, day, hour)
+    jd_start = swe.julday(year, month, day, hours)
+    jd_end = swe.julday(year, month, day + 1, hours)  # Конец дня
 
-    # Коды планет
-    planet_ids = [swe.SUN, swe.MOON, swe.MERCURY, swe.VENUS, swe.MARS,
-                  swe.JUPITER, swe.SATURN, swe.URANUS, swe.NEPTUNE, swe.PLUTO,
-                  swe.MEAN_NODE, swe.TRUE_NODE]
+    # Рассчитываем позицию планеты на начало и конец дня
+    start_planet_position, _ = swe.calc_ut(jd_start, planet_id)  # Игнорируем второй элемент
+    end_planet_position, _ = swe.calc_ut(jd_end, planet_id)  # Игнорируем второй элемент
 
-    planet_positions = []  # Создаем список для хранения позиций планет
+    # Рассчитываем разницу позиций и переводим её в градусы
+    position_difference = end_planet_position[0] - start_planet_position[0]
+    if position_difference < 0:
+        position_difference += 360.0
 
-    # Вычисляем позиции планет и добавляем их в список
-    for planet_id in planet_ids:
-        planet_pos = swe.calc_ut(jd_et, planet_id)
-        planet_positions.append({
-            "planet_id": planet_id,
-            "longitude": planet_pos[0],
-            "latitude": planet_pos[1]
-        })
+    # Рассчитываем скорость планеты (градусы в сутки)
+    planet_speed = position_difference / 1.0  # Перевод в градусы в сутки
 
-    return planet_positions
+    # Рассчитываем сколько градусов планета прошла за заданное время
+    elapsed_hours = hours - start_planet_position[0]
+    if elapsed_hours < 0:
+        elapsed_hours += 360.0
+
+    # Рассчитываем позицию планеты на заданное время
+    current_planet_position = start_planet_position[0] + (planet_speed * elapsed_hours)
+
+    return planet_id, planet_names[planet_id], current_planet_position
 
 def calculate_planet_degrees(planet_positions):
     """

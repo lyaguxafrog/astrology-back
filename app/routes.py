@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 # Дополнительные модули
 import os
 from dotenv import load_dotenv, find_dotenv
+import swisseph as swe
 
 # Flask-модули
 from app import app
@@ -36,7 +37,16 @@ def index():
         latitude, longitude = maps_api.extract_coordinates(coordinates)
         
         # Получение позиций планет
-        planet_positions = planet.get_planets(hours, day, month, year) 
+        planet_positions = []
+        for planet_id in range(planet.swe.SUN, planet.swe.TRUE_NODE + 1):
+            planet_id, planet_name, planet_position = planet.calculate_planet_position(
+                hours, day, month, year, planet_id
+            )
+            planet_positions.append({
+                "planet_id": planet_id,
+                "planet_name": planet_name,
+                "planet_position": planet_position
+            })
         
         # Создание списка для хранения информации о домах
         houses_info = []
