@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "astrology backend"
-version = "0.1.0"
-description = ""
+version = "0.1.4"
+description = "Backend астрологического приложения"
 authors = ["Adrian Makridenko"]
 license = "MIT"
 readme = "README.md"
@@ -10,9 +10,11 @@ readme = "README.md"
 python = "^3.9"
 flask = "^2.0.1"
 flask-bootstrap = "^3.3.7.1"
-kerykeion = "^4.0.5"
 python-dotenv = "^1.0.0"
 requests = "^2.31.0"
+ymaps = "^1.1"
+pyswisseph = "^2.00.00"
+
 
 
 
