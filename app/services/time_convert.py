@@ -44,27 +44,23 @@ def time_zone_convert(hour: int, zone: str) -> int:
     """
     Конвертация часовой зоны в UTC-00:00
 
-    :params hour: Час для конвертации
-    :params zone: Часовой пояс в формате UTC±HH:MM
+    :param hour: Час для конвертации
+    :param zone: Часовой пояс в формате UTC±HH:MM
 
-    :returns: Час в UTC-00:00
+    :returns: Час в UTC-00:00 (в виде целого числа)
     """
     if zone == 'UTC±00:00':
-        return int(hour)
+        return int(hour)  # Если уже в UTC-00:00, возвращаем исходное значение часа
     else:
-        zone_hours = int(zone[4:6])
-        zone_minutes = int(zone[7:9])
+        zone_hours = int(zone[4:6])  # Получаем часовой сдвиг
+        zone_minutes = int(zone[7:9])  # Получаем минутный сдвиг
         
-        # Создание объекта datetime для исходной даты и времени
-        input_time = datetime.strptime(str(hour), '%H')
+        input_time = datetime.strptime(str(hour), '%H')  # Создание объекта datetime
         
-        # Рассчитываем разницу времени для перевода в UTC
-        time_difference = timedelta(hours=zone_hours, minutes=zone_minutes)
+        time_difference = timedelta(hours=zone_hours, minutes=zone_minutes)  # Рассчет разницы времени
         
-        # Добавляем разницу времени, чтобы перевести в UTC
-        utc_time = input_time + time_difference
+        utc_time = input_time + time_difference  # Прибавление разницы для перевода в UTC
         
-        # Преобразуем время в строку с форматом 'H' (без нуля в начале)
-        utc_hour = utc_time.strftime('%-H')
+        utc_hour = utc_time.strftime('%-H')  # Преобразование в строку без нуля в начале
         
-        return utc_hour
+        return int(utc_hour)  # Возвращаем UTC-час как целое число
