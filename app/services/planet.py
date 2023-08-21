@@ -1,10 +1,13 @@
+# app/services/planet.py
 import swisseph as swe
-
 import os
 from dotenv import load_dotenv, find_dotenv
 
-swe.set_ephe_path(os.getenv('EPH_PATH'))
+# Загрузка переменных окружения из файла .env
+load_dotenv(find_dotenv())
 
+# Установка пути к эфемеридам
+swe.set_ephe_path(os.getenv('EPH_PATH'))
 
 def get_planets(hour: int, day: int, month: int, year: int):
     """
@@ -38,5 +41,19 @@ def get_planets(hour: int, day: int, month: int, year: int):
 
     return planet_positions
 
+def calculate_planet_degrees(planet_positions):
+    """
+    Вычисление градусов планет из позиций планет
 
-print(get_planets(00, 12, 12, 2012))
+    :params planet_positions: Список позиций планет
+
+    :returns: Словарь с градусами планет
+    """
+    planet_degrees = {}
+    
+    for planet_pos in planet_positions:
+        planet_id = planet_pos['planet_id']
+        longitude = planet_pos['longitude']
+        planet_degrees[planet_id] = longitude
+    
+    return planet_degrees

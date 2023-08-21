@@ -1,12 +1,14 @@
+# app/services/maps_api.py
 from ymaps import *
-
 import os
 import json
 from dotenv import load_dotenv, find_dotenv
 
+# Загрузка переменных окружения из файла .env
 load_dotenv(find_dotenv())
-apikey = os.getenv('MAP_API_KEY')
 
+# Получение ключа API из переменных окружения
+apikey = os.getenv('MAP_API_KEY')
 
 def search_location(place: str):
     """
@@ -14,7 +16,7 @@ def search_location(place: str):
 
     :params place: Место для прокидования по API
 
-    :returns: JSON-ответ от api
+    :returns: JSON-ответ от API
     """
 
     client = GeocodeClient(api_key=apikey, timeout=10, lang="en_RU")
@@ -25,7 +27,6 @@ def search_location(place: str):
 
     return json_place
 
-
 def extract_point_from_json(json_data):
     """
     Извлечение значения 'Point' из JSON-ответа
@@ -35,13 +36,10 @@ def extract_point_from_json(json_data):
     :returns: Значение 'Point' как строку
     """
     try:
-        point = json_data['response']
-        ['GeoObjectCollection']
-        ['featureMember'][0]['GeoObject']['Point']['pos']
+        point = json_data['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos']
         return point
     except KeyError:
         return None
-
 
 def get_coordinates(place: str):
     """
@@ -76,13 +74,11 @@ def get_coordinates(place: str):
 
 def extract_coordinates(coord_string):
     """
-    Преообразование координат
+    Преобразование координат
 
     :params coord_string: Строка с долготой и широтой
 
-    :returns: 
+    :returns: Кортеж с координатами (широта, долгота)
     """
-
-
     lat, lon = coord_string.split()  # Разделяем координаты по пробелу
     return float(lat), float(lon)  # Преобразуем в числа с плавающей точкой

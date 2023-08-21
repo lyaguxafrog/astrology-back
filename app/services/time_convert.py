@@ -1,11 +1,11 @@
-import datetime
+# app/services/time_convert.py
 from datetime import datetime, timedelta
 import math
 
 def get_julian_datetime(year: int, month: int, day: int,
                          hour: int, minute: int):
     """
-    Конвертация даты в Юлианский календарь
+    Конвертация даты и времени в Юлианский календарь
 
     :params year: Год
     :params month: Месяц      
@@ -13,13 +13,14 @@ def get_julian_datetime(year: int, month: int, day: int,
     :params hour: Час  
     :params minute: Минута
 
-    :returns: Дату в Юлианском календаре
+    :returns: Дата в Юлианском календаре
 
     """
+    # Создание объекта datetime для заданных параметров
+    date = datetime(year=year, month=month, day=day, 
+                    hour=hour, minute=minute, second=0)
 
-    date = datetime(year, month, day, hour, minute, 0)
-
-    if not isinstance(date, datetime.datetime):
+    if not isinstance(date, datetime):
         raise TypeError(
             'Invalid type for parameter "date" - expecting datetime'
             )
@@ -28,7 +29,7 @@ def get_julian_datetime(year: int, month: int, day: int,
             'Datetime must be between year 1801 and 2099'
             )
 
-    # Perform the calculation
+    # Вычисление Юлианской даты
     julian_datetime = 367 * date.year - int(
         (7 * (date.year + int(
         (date.month + 9) / 12.0))) / 4.0) + int(
@@ -39,13 +40,12 @@ def get_julian_datetime(year: int, month: int, day: int,
 
     return julian_datetime
 
-
 def time_zone_convert(hour: int, zone: str) -> int:
     """
-    Конвертация тайм зоны в UTC-00:00
+    Конвертация часовой зоны в UTC-00:00
 
     :params hour: Час для конвертации
-    :params zone: Зона в которой введены часы в формате UTC-03:00
+    :params zone: Часовой пояс в формате UTC±HH:MM
 
     :returns: Час в UTC-00:00
     """
