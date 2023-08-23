@@ -60,19 +60,20 @@ class Planets:
         for planet_id in planet_names.keys():
             planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]
             planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]
-            position_difference = planet_position_start - planet_position_next
+            position_difference = planet_position_next - planet_position_start
             
-            retrograde = position_difference < 0
+            if position_difference < 0:
+                position_difference += 360.0
             
             daily_distance = abs(position_difference)
             distance_per_second = daily_distance / (24 * 3600)
             
             target_time_seconds = (self.hour - self.timezone) * 3600 + self.minute * 60 + self.second
-            position_at_time = planet_position_start + target_time_seconds * distance_per_second
+            position_at_start = planet_position_start + target_time_seconds * distance_per_second
             
-            if retrograde:
-                position_at_time -= target_time_seconds * distance_per_second
+            if position_at_start > 360.0:
+                position_at_start -= 360.0
             
-            planet_positions[planet_names[planet_id]] = position_at_time
+            planet_positions[planet_names[planet_id]] = position_at_start
         
         return planet_positions
