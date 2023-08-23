@@ -30,12 +30,12 @@ def index():
         latitude, longitude = maps_api.extract_coordinates(coordinates)
 
         timezone = time_convert.get_time_zone(latitude=latitude, longitude=longitude)
-        hours = hour # int(time_convert.time_zone_convert(hour=not_converted_hour, zone=timezone))
+        hours =  hour # int(time_convert.time_zone_convert(hour=not_converted_hour, zone=timezone))
 
         planet_calculator = Planets(year, month, day, hours, minute, timezone)
         planet_positions = planet_calculator.get_planet_positions()
         
-        planet_positions_str = ",".join([f"{planet}:{position}" for planet, position in planet_positions.items()])
+        # planet_positions_str = ",".join([f"{planet}:{position}" for planet, position in planet_positions.items()])
 
         houses_info = []
         for house_system in house_systems:

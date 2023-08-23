@@ -11,7 +11,7 @@ def get_time_zone(latitude: float, longitude: float) -> int:
     :params latitude: Широта
     :params longitude: Долгота
 
-    :returns: Час смешения
+    :returns: Час смещения
     """
     tf = TimezoneFinder()
     timezone_str = tf.timezone_at(lng=longitude, lat=latitude)

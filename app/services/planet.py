@@ -33,7 +33,7 @@ class Planets:
         self.second = 0
         self.timezone = timezone
         
- 
+
 
 
     def get_planet_positions(self):
@@ -52,12 +52,11 @@ class Planets:
             swe.TRUE_NODE: "True Node"
         }
         
-        swe.set_ephe_path(os.getenv('EPH_PATH'))  # Set the path to your ephemeris files
         
         julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  
         julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  
         
-        time = ((self.hour - self.timezone) * 3600) + (self.minute) * 60
+        time = ((self.hour - self.timezone) * 3600) + (self.minute * 60)
 
         planet_positions = {}
         
