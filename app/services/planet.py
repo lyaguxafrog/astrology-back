@@ -52,28 +52,31 @@ class Planets:
             swe.TRUE_NODE: "True Node"
         }
         
-        julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  # Start of the day
-        julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  # Start of the next day
+        swe.set_ephe_path(os.getenv('EPH_PATH'))  # Set the path to your ephemeris files
+        
+        julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  
+        julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  
         
         planet_positions = {}
         
-        for planet_id in planet_names.keys():
+        for planet_id, planet_name in planet_names.items():
             planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]
             planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]
             position_difference = planet_position_next - planet_position_start
             
             if position_difference < 0:
+                planet_motion = " R"
                 position_difference += 360.0
-            
+            else:
+                planet_motion = ""
+                
             daily_distance = abs(position_difference)
             distance_per_second = daily_distance / (24 * 3600)
             
             target_time_seconds = (self.hour - self.timezone) * 3600 + self.minute * 60 + self.second
             position_at_start = planet_position_start + target_time_seconds * distance_per_second
+            position_at_start %= 360.0  # Ensure the value is within 0-360 range
             
-            if position_at_start > 360.0:
-                position_at_start -= 360.0
-            
-            planet_positions[planet_names[planet_id]] = position_at_start
+            planet_positions[planet_name] = f"{position_at_start:.15f}{planet_motion}"
         
         return planet_positions

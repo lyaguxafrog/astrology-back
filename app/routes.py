@@ -22,7 +22,7 @@ def index():
         year = int(request.form['year'])
         month = int(request.form['month'])
         day = int(request.form['day'])
-        not_converted_hour = int(request.form['hour'])
+        hour = int(request.form['hour'])
         minute = int(request.form['minute'])
         place = request.form['place']
 
@@ -30,9 +30,9 @@ def index():
         latitude, longitude = maps_api.extract_coordinates(coordinates)
 
         timezone = time_convert.get_time_zone(latitude=latitude, longitude=longitude)
-        hours = int(time_convert.time_zone_convert(hour=not_converted_hour, zone=timezone))
+        hours = hour # int(time_convert.time_zone_convert(hour=not_converted_hour, zone=timezone))
 
-        planet_calculator = Planets(year, month, day, hours, minute)
+        planet_calculator = Planets(year, month, day, hours, minute, timezone)
         planet_positions = planet_calculator.get_planet_positions()
         
         planet_positions_str = ",".join([f"{planet}:{position}" for planet, position in planet_positions.items()])
