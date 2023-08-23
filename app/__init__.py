@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_restful import Api
 from .api import api_bp
 
-from app.api import routes
+# from app.api import routes
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)

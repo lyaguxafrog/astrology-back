@@ -57,26 +57,25 @@ class Planets:
         julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  
         julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  
         
+        time = ((self.hour - self.timezone) * 3600) + (self.minute) * 60
+
         planet_positions = {}
         
         for planet_id, planet_name in planet_names.items():
+
             planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]
             planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]
-            position_difference = planet_position_next - planet_position_start
             
-            if position_difference < 0:
+            planet_24_distance = planet_position_next - planet_position_start
+            planet_disctance_per_second = planet_24_distance / 86400
+
+            if planet_24_distance < 0:
                 planet_motion = " R"
-                position_difference += 360.0
+                end_planet_position = planet_position_start - (time * planet_disctance_per_second)
             else:
                 planet_motion = ""
-                
-            daily_distance = abs(position_difference)
-            distance_per_second = daily_distance / (24 * 3600)
+                end_planet_position = planet_position_start + (time * planet_disctance_per_second)
             
-            target_time_seconds = (self.hour - self.timezone) * 3600 + self.minute * 60 + self.second
-            position_at_start = planet_position_start + target_time_seconds * distance_per_second
-            position_at_start %= 360.0  # Ensure the value is within 0-360 range
-            
-            planet_positions[planet_name] = f"{position_at_start:.15f}{planet_motion}"
+            planet_positions[planet_name] = f"{end_planet_position}{planet_motion}"
         
         return planet_positions
