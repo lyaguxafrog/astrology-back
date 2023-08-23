@@ -4,7 +4,7 @@ import swisseph as swe
 import os
 from dotenv import load_dotenv, find_dotenv
 
-from time_convert import get_julian_datetime
+from app.services.time_convert import get_julian_datetime
 
 # Загрузка переменных окружения из файла .env
 load_dotenv(find_dotenv())
@@ -29,6 +29,7 @@ class Planets:
         self.day = day
         self.hour = hour
         self.minute = minute
+        self.second = 0
         
     # def start_end_position(self, planet_id: int):
 
@@ -77,14 +78,14 @@ class Planets:
             swe.TRUE_NODE: "True Node"
         }
         
-        julian_day_start = swe.julday(self.year, self.month, self.day, self.hour, self.minute, 0)
-        julian_day_next = swe.julday(self.year, self.month, self.day + 1, self.hour, self.minute, 0)
+        julian_day_start = swe.julday(self.year, self.month, self.day, self.hour, self.minute)
+        julian_day_next = swe.julday(self.year, self.month, self.day + 1, self.hour, self.minute)
         
         planet_positions = {}
         
         for planet_id in planet_names.keys():
-            planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0]
-            planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0]
+            planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]  # Извлекаем позицию планеты из кортежа
+            planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]  # Извлекаем позицию планеты из кортежа
             position_difference = planet_position_next - planet_position_start
             
             if position_difference < 0:

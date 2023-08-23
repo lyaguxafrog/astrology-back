@@ -23,7 +23,7 @@ def get_house(year: int, month: int, day: int, hour: int, minute: int,
                                 hour=hour, minute=minute)
     
     # Вычисление координат домов
-    house_cusp = swe.houses_ex(tjdut=date, lat=latitude,
+    house_cusp = swe.houses_ex2(tjdut=date, lat=latitude,
                                lon=longitude, hsys=house, flags=0)
 
     return house_cusp

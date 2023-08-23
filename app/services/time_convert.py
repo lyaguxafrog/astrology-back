@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 from timezonefinder import TimezoneFinder
 import math
-
+import pytz
 
 def get_time_zone(latitude: float, longitude: float) -> int:
     """
@@ -18,10 +18,7 @@ def get_time_zone(latitude: float, longitude: float) -> int:
 
     if timezone_str is None:
         return None
-
-    from datetime import datetime
-    import pytz
-
+    
     now = datetime.now(pytz.timezone(timezone_str))
     utc_offset = int(now.utcoffset().total_seconds() / 3600)
 
