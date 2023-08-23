@@ -77,6 +77,6 @@ def time_zone_convert(hour: int, zone: int) -> int:
         # Если уже в UTC-00:00, возвращаем исходное значение часа
         return int(hour)
     else:
-        new_time = hour + zone
+        new_time = hour - zone
         
         return new_time

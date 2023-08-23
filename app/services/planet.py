@@ -4,14 +4,13 @@ import swisseph as swe
 import os
 from dotenv import load_dotenv, find_dotenv
 
-from app.services.time_convert import get_julian_datetime
+from time_convert import get_julian_datetime, time_zone_convert
 
 # Загрузка переменных окружения из файла .env
 load_dotenv(find_dotenv())
 
 # Установка пути к эфемеридам
 swe.set_ephe_path(os.getenv('EPH_PATH'))
-
 
 class Planets:
     def __init__(self, year: int, month: int, day: int, hour: int, minute: int, timezone: int) -> None:
@@ -34,47 +33,48 @@ class Planets:
         self.timezone = timezone
         
 
-
-
     def get_planet_positions(self):
-        planet_names = {
-            swe.SUN: "Sun",
-            swe.MOON: "Moon",
-            swe.MERCURY: "Mercury",
-            swe.VENUS: "Venus",
-            swe.MARS: "Mars",
-            swe.JUPITER: "Jupiter",
-            swe.SATURN: "Saturn",
-            swe.URANUS: "Uranus",
-            swe.NEPTUNE: "Neptune",
-            swe.PLUTO: "Pluto",
-            swe.MEAN_NODE: "Mean Node",
-            swe.TRUE_NODE: "True Node"
-        }
-        
-        
-        julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  
-        julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  
-        
-        time = ((self.hour - self.timezone) * 3600) + (self.minute * 60)
 
-        planet_positions = {}
         
-        for planet_id, planet_name in planet_names.items():
 
-            planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]
-            planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]
+
+        hour = time_zone_convert(self.hour, self.timezone)
+        planet_position = []
+
+        _isvalid, start_tjd_ut, start_dt = swe.date_conversion(self.year, self.month, self.day, 0.0)
+        _isvalid, next_jid_ut, next_dt = swe.date_conversion(self.year, self.month, self.day + 1, 0.0)
+
+        for p in range(swe.SUN, swe.CHIRON + 1):
+            if p == swe.EARTH:
+                continue
             
-            planet_24_distance = planet_position_next - planet_position_start
-            planet_disctance_per_second = planet_24_distance / 86400
+            try:
+                start_dgr = swe.calc_ut(start_tjd_ut, p)[0][0]
+                next_dgr = swe.calc_ut(next_jid_ut, p)[0][0]
+            except swe.Error as err:
+                continue
 
-            if planet_24_distance < 0:
-                planet_motion = " R"
-                end_planet_position = planet_position_start - (time * planet_disctance_per_second)
+            move_pear_24 = next_dgr - start_dgr
+            move_pear_sec = move_pear_24 /  86400
+
+            time = (hour * 3600) + (self.minute * 60)
+
+            pnam = swe.get_planet_name(p)
+
+            if move_pear_24 < 0:
+                planet_motion = ' R'
+                end_planet_position = start_dgr - (time * move_pear_sec)
             else:
-                planet_motion = ""
-                end_planet_position = planet_position_start + (time * planet_disctance_per_second)
+                planet_motion = ' None'
+                end_planet_position = start_dgr + (time * move_pear_sec)
+
+            planet_position_dict = {
+                "planet_id": p,
+                "planet_name": pnam,
+                "degree": end_planet_position,
+                "retrograde": planet_motion
+            }
             
-            planet_positions[planet_name] = f"{end_planet_position}{planet_motion}"
-        
-        return planet_positions
+            planet_position.append(planet_position_dict)
+
+        return planet_position
