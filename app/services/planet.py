@@ -14,7 +14,7 @@ swe.set_ephe_path(os.getenv('EPH_PATH'))
 
 
 class Planets:
-    def __init__(self, year: int, month: int, day: int, hour: int, minute: int) -> None:
+    def __init__(self, year: int, month: int, day: int, hour: int, minute: int, timezone: int) -> None:
         """
         Конструктор класса Planets. Принимает параметры для инициализации объекта.
 
@@ -23,6 +23,7 @@ class Planets:
         :params day: День
         :params hour: Час
         :params minute: Минута
+        :params timezone: Смещение временной зоны по UTC в формате HH
         """
         self.year = year
         self.month = month
@@ -30,36 +31,9 @@ class Planets:
         self.hour = hour
         self.minute = minute
         self.second = 0
+        self.timezone = timezone
         
-    # def start_end_position(self, planet_id: int):
-
-    #     # Преобразования в Юлианский календарь
-    #     start_jd_date = get_julian_datetime(year=self.year, month=self.month, day=self.day, hour=self.hour, minute=self.minute)
-    #     end_jd_date = get_julian_datetime(year=self.year, month=self.month, day=self.day + 1, hour=self.hour, minute=self.minute)
-
-
-    #     planet_names = {
-    #         swe.SUN: "Sun",
-    #         swe.MOON: "Moon",
-    #         swe.MERCURY: "Mercury",
-    #         swe.VENUS: "Venus",
-    #         swe.MARS: "Mars",
-    #         swe.JUPITER: "Jupiter",
-    #         swe.SATURN: "Saturn",
-    #         swe.URANUS: "Uranus",
-    #         swe.NEPTUNE: "Neptune",
-    #         swe.PLUTO: "Pluto",
-    #         swe.MEAN_NODE: "Mean Node",
-    #         swe.TRUE_NODE: "True Node"
-    # }
-
-    #     start_position = swe.calc_ut(start_jd_date, planet_id)
-    #     end_position = swe.calc_ut(end_jd_date, planet_id)
-    #     planet_name = planet_names[planet_id]
-
-    #     return planet_name, planet_id, start_position, end_position
-
-    
+ 
 
 
     def get_planet_positions(self):
@@ -78,30 +52,27 @@ class Planets:
             swe.TRUE_NODE: "True Node"
         }
         
-        julian_day_start = swe.julday(self.year, self.month, self.day, self.hour, self.minute)
-        julian_day_next = swe.julday(self.year, self.month, self.day + 1, self.hour, self.minute)
+        julian_day_start = swe.julday(self.year, self.month, self.day, 0, 0)  # Start of the day
+        julian_day_next = swe.julday(self.year, self.month, self.day + 1, 0, 0)  # Start of the next day
         
         planet_positions = {}
         
         for planet_id in planet_names.keys():
-            planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]  # Извлекаем позицию планеты из кортежа
-            planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]  # Извлекаем позицию планеты из кортежа
-            position_difference = planet_position_next - planet_position_start
+            planet_position_start = swe.calc_ut(julian_day_start, planet_id)[0][0]
+            planet_position_next = swe.calc_ut(julian_day_next, planet_id)[0][0]
+            position_difference = planet_position_start - planet_position_next
             
-            if position_difference < 0:
-                retrograde = True
-            else:
-                retrograde = False
+            retrograde = position_difference < 0
             
             daily_distance = abs(position_difference)
             distance_per_second = daily_distance / (24 * 3600)
             
-            position_at_time = planet_position_start + (self.hour * 3600 + self.minute * 60 + self.second) * distance_per_second
+            target_time_seconds = (self.hour - self.timezone) * 3600 + self.minute * 60 + self.second
+            position_at_time = planet_position_start + target_time_seconds * distance_per_second
             
             if retrograde:
-                position_at_time -= (self.hour * 3600 + self.minute * 60 + self.second) * distance_per_second
+                position_at_time -= target_time_seconds * distance_per_second
             
             planet_positions[planet_names[planet_id]] = position_at_time
         
         return planet_positions
-
