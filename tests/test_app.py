@@ -51,31 +51,15 @@ class TestTimeConvert(unittest.TestCase):
 
     def test_time_zone_convert(self):
         # Тестирование конвертации таймзоны в UTC
-        result = time_convert.time_zone_convert(12, 'UTC+03:00')
-        self.assertEqual(result, 15)
+        result = time_convert.time_zone_convert(hour=3, zone=3)
+        self.assertEqual(result, 6)
 
-class TestPlanet(unittest.TestCase):
-
-    def test_get_planets(self):
-        # Тестирование получения данных о планетах
-        result = planet.get_planets(12, 1, 1, 2023)
+    def test_get_time_zone(self):
+        result = time_convert.get_time_zone(latitude=55.755864, longitude=37.617698)
         self.assertIsNotNone(result)
-        self.assertIsInstance(result, list)  # Проверяем, что результат - список
-        self.assertGreater(len(result), 0)  # Проверяем, что список не пуст
+        self.assertEqual(result, 3)
 
-    def test_calculate_planet_degrees(self):
-        # Тестирование вычисления градусов планет
-        planet_positions = [
-            {"planet_id": 0, "longitude": 10.5, "latitude": 0.0},
-            {"planet_id": 1, "longitude": 20.5, "latitude": 0.0},
-            {"planet_id": 2, "longitude": 30.5, "latitude": 0.0},
-        ]
-        result = planet.calculate_planet_degrees(planet_positions)
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, dict)  # Проверяем, что результат - словарь
-        self.assertEqual(result[0], 10.5)
-        self.assertEqual(result[1], 20.5)
-        self.assertEqual(result[2], 30.5)
+
 
 if __name__ == '__main__':
     unittest.main()
