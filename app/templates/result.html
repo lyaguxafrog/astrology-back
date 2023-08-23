@@ -3,34 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astrology Results</title>
+    <title>Astrology Result</title>
 </head>
 <body>
-    <h1>Результаты расчетов</h1>
-    
-    <h2>Позиции планет:</h2>
-    {% for planet_position in planet_positions %}
-        <p>Планета ID: {{ planet_position.planet_id }} - Градус: {{ planet_position.planet_position }}</p>
+    <h1>Astrology Result</h1>
+
+    <h2>Planet Positions:</h2>
+    <ul>
+        {% for planet, position in planet_positions.items() %}
+        <li>{{ planet }}: {{ position }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Houses Information:</h2>
+    {% for house_info in houses_info %}
+    <div>
+        <h3>{{ house_info['name'] }}</h3>
+        <p>{{ house_info['info'] }}</p>
+    </div>
     {% endfor %}
-    
-    <h2>Информация о домах:</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Система домов</th>
-                <th>Имя дома</th>
-                <th>Координаты дома</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for house_info in houses_info %}
-                <tr>
-                    <td>{{ house_info.system }}</td>
-                    <td>{{ house_info.name }}</td>
-                    <td>{{ house_info.house_info }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 </body>
 </html>
