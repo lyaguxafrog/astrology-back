@@ -1,4 +1,4 @@
-# app/services/maps_api.py
+# Импорт необходимых библиотек
 from ymaps import *
 import os
 import json
@@ -10,30 +10,34 @@ load_dotenv(find_dotenv())
 # Получение ключа API из переменных окружения
 apikey = os.getenv('MAP_API_KEY')
 
+
 def search_location(place: str):
     """
     Поиск локации по API
 
-    :params place: Место для прокидования по API
+    :params place: Место для запроса через API
 
     :returns: JSON-ответ от API
     """
-
+    # Создание клиента для геокодирования с использованием ключа API
     client = GeocodeClient(api_key=apikey, timeout=10, lang="en_RU")
 
+    # Выполнение геокодирования
     finded_place = client.geocode(place)
 
+    # Преобразование в JSON-строку
     json_place = json.dumps(finded_place)
 
     return json_place
+
 
 def extract_point_from_json(json_data):
     """
     Извлечение значения 'Point' из JSON-ответа
 
-    :params json_data: JSON-ответ от API (словарь)
+    :params json_data: JSON-ответ от API (в виде словаря)
 
-    :returns: Значение 'Point' как строку
+    :returns: Значение 'Point' в виде строки
     """
     try:
         feature_member = json_data['response']['GeoObjectCollection']['featureMember']
@@ -45,16 +49,16 @@ def extract_point_from_json(json_data):
     except KeyError:
         return None
 
+
 def get_coordinates(place: str):
     """
     Получение координат
 
     :params place: Место
 
-    :returns: Координаты (Долгота и Широта)
+    :returns: Координаты (долгота и широта)
     """
-
-    # Пример использования
+    # Пример использования (заглушка)
     json_response = {
         'response': {
             'GeoObjectCollection': {
@@ -63,11 +67,14 @@ def get_coordinates(place: str):
         }
     }
 
+    # Извлечение координат из заглушки
     point_value = extract_point_from_json(json_response)
 
+    # Выполнение запроса на получение JSON-ответа через API
     json_string = search_location(place)
     json_data = json.loads(json_string)
 
+    # Извлечение координат из JSON-ответа
     point_value_from_api = extract_point_from_json(json_data)
 
     # Меняем порядок координат перед возвратом
@@ -75,6 +82,7 @@ def get_coordinates(place: str):
     formatted_coordinates = f"{lat} {lon}"  # Меняем порядок и объединяем
 
     return formatted_coordinates
+
 
 def extract_coordinates(coord_string):
     """
