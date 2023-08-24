@@ -1,24 +1,28 @@
-# app/services/time_convert.py
+# Импорт необходимых библиотек
 from datetime import datetime, timedelta
 from timezonefinder import TimezoneFinder
 import math
 import pytz
 
+
 def get_time_zone(latitude: float, longitude: float) -> int:
     """
-    Получения часового пояса UTC в формате HH
+    Получение часового пояса UTC в формате HH
 
     :params latitude: Широта
     :params longitude: Долгота
 
     :returns: Час смещения
     """
+    # Создание объекта TimezoneFinder для определения часового пояса
     tf = TimezoneFinder()
     timezone_str = tf.timezone_at(lng=longitude, lat=latitude)
 
+    # Если не удалось определить часовой пояс
     if timezone_str is None:
         return None
-    
+
+    # Получение текущей даты и времени в указанном часовом поясе
     now = datetime.now(pytz.timezone(timezone_str))
     utc_offset = int(now.utcoffset().total_seconds() / 3600)
 
@@ -37,16 +41,17 @@ def get_julian_datetime(year: int, month: int, day: int,
     :params minute: Минута
 
     :returns: Дата в Юлианском календаре
-
     """
     # Создание объекта datetime для заданных параметров
     date = datetime(year=year, month=month, day=day,
                     hour=hour, minute=minute, second=0)
 
+    # Проверка типа входных данных
     if not isinstance(date, datetime):
         raise TypeError(
             'Invalid type for parameter "date" - expecting datetime'
         )
+    # Проверка на диапазон года
     elif date.year < 1801 or date.year > 2099:
         raise ValueError(
             'Datetime must be between year 1801 and 2099'
@@ -65,6 +70,14 @@ def get_julian_datetime(year: int, month: int, day: int,
 
 
 def time_zone_convert(hour: int, zone: int) -> int:
+    """
+    Конвертация времени из одного часового пояса в другой
+
+    :params hour: Час
+    :params zone: Смещение часового пояса
+
+    :returns: Новый час после конвертации
+    """
     if zone == 0:
         return int(hour)
     else:
