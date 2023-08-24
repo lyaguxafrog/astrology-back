@@ -4,7 +4,7 @@ import swisseph as swe
 import os
 from dotenv import load_dotenv, find_dotenv
 
-from time_convert import get_julian_datetime, time_zone_convert
+from app.services.time_convert import get_julian_datetime, time_zone_convert
 
 # Загрузка переменных окружения из файла .env
 load_dotenv(find_dotenv())

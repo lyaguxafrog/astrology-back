@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+
+import json
 import os
 from dotenv import load_dotenv, find_dotenv
 import swisseph as swe
 from urllib.parse import unquote_plus
+
 from app import app
 from app.services import maps_api, houses, time_convert
 from app.services.planet import Planets
@@ -62,10 +65,7 @@ def result():
     planet_positions = request.args.get('planet_positions', '')
     houses_info = request.args.get('houses_info', '')
 
-    planet_positions_entries = planet_positions.split(',')
-    planet_positions_dict = {}
-    for entry in planet_positions_entries:
-        planet, position = entry.split(':')
-        planet_positions_dict[planet] = position
+    planet_positions_list = json.loads(planet_positions)  # Преобразуем JSON в список
+    houses_info_list = json.loads(houses_info)
 
-    return render_template('result.html', planet_positions=planet_positions_dict, houses_info=houses_info)
+    return render_template('result.html', planet_positions=planet_positions_list, houses_info=houses_info_list)
