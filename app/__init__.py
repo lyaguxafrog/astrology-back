@@ -1,25 +1,12 @@
-from flask import Blueprint, jsonify, request
-from app.services.houses import Houses
+#/app/__init__.py
+from flask import Flask
+from flask_bootstrap import Bootstrap
 
-house_api = Blueprint('house_api', __name__)
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
-@house_api.route('/house_info/', methods=['POST'])
-def get_house_info():
-    data = request.get_json()
+from app import routes, author
 
-    year = data['year']
-    month = data['month']
-    day = data['day']
-    hours = data['hours']
-    minute = data['minute']
-    place = data['place']
-    timezone = data['timezone']
+from app.api import api_blueprint
 
-    house_calculator = Houses(year=year, month=month, day=day, hours=hours, minute=minute, timezone=timezone, place=place)
-    house_info = house_calculator.get_house()
-
-    return jsonify(house_info)
-
-
-
-
+app.register_blueprint(api_blueprint, url_prefix='/api')
