@@ -65,18 +65,9 @@ def get_julian_datetime(year: int, month: int, day: int,
 
 
 def time_zone_convert(hour: int, zone: int) -> int:
-    """
-    Конвертация часовой зоны в UTC-00:00
-
-    :param hour: Час для конвертации
-    :param zone: Часовой пояс в формате H
-
-    :returns: Час в UTC-00:00 (в виде целого числа)
-    """
     if zone == 0:
-        # Если уже в UTC-00:00, возвращаем исходное значение часа
         return int(hour)
     else:
-        new_time = hour - zone
-        
+        new_time = int(int(hour) - int(zone))
+        new_time = (new_time + 24) % 24  # Приведение к диапазону 0-23
         return new_time

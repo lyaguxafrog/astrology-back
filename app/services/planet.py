@@ -35,10 +35,8 @@ class Planets:
 
     def get_planet_positions(self):
 
-        
 
-
-        hour = time_zone_convert(self.hour, self.timezone)
+        hour = time_zone_convert(int(self.hour), int(self.timezone))
         planet_position = []
 
         _isvalid, start_tjd_ut, start_dt = swe.date_conversion(self.year, self.month, self.day, 0.0)
