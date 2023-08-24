@@ -78,9 +78,12 @@ def time_zone_convert(hour: int, zone: int) -> int:
 
     :returns: Новый час после конвертации
     """
-    if zone == 0:
-        return int(hour)
-    else:
-        new_time = int(int(hour) - int(zone))
-        new_time = (new_time + 24) % 24  # Приведение к диапазону 0-23
-        return new_time
+
+    # Вычисление нового часа с учетом смещения
+    new_time = (hour - zone) % 24
+    
+    # Если новый час получился отрицательным, добавляем 24 часа
+    if new_time < 0:
+        new_time += 24
+        
+    return new_time
