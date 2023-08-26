@@ -89,7 +89,8 @@ class TestPlanets(unittest.TestCase):
 
 class TestMapsAPI(unittest.TestCase):
 
-    @patch('app.services.maps_api.search_location', return_value='{"response": {"GeoObjectCollection": {"featureMember": [{"GeoObject": {"Point": {"pos": "37.615560 55.752220"}}}]}}}')
+    @patch('app.services.maps_api.search_location', 
+           return_value='{"response": {"GeoObjectCollection": {"featureMember": [{"GeoObject": {"Point": {"pos": "37.615560 55.752220"}}}]}}}')
     def test_get_coordinates(self, mock_search_location):
         coordinates = get_coordinates("Moscow, Russia")
         self.assertEqual(coordinates, "55.752220 37.615560")
