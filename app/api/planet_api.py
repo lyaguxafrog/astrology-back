@@ -1,6 +1,8 @@
 # Импорт необходимых библиотек и модулей
 from flask import Blueprint, jsonify, request
 from app.services.planet import Planets
+from app.services.maps_api import get_coordinates, extract_coordinates
+from app.services.time_convert import get_time_zone
 
 # Создание экземпляра Blueprint для API связанного с позициями планет
 planet_api = Blueprint('planet_api', __name__)
@@ -19,7 +21,12 @@ def get_planet_positions():
     day = data['day']
     hours = data['hours']
     minute = data['minute']
-    timezone = data['timezone']
+    place = data['place']
+
+    coordinates = get_coordinates(place)
+    latitude, longitude = extract_coordinates(coordinates)
+    timezone = get_time_zone(latitude=latitude,longitude=longitude)
+
 
     # Создание экземпляра класса Planets для вычисления позиций планет
     planet_calculator = Planets(year, month, day, hours, minute, timezone)

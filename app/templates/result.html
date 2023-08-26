@@ -7,7 +7,7 @@
     <h1>Позиции планет</h1>
     <ul>
         {% for planet_position in planet_positions %}
-        <li>{{ planet_position['planet_name'] }}: {{ planet_position['degree'] }}</li>
+        <li>{{ planet_position['planet_name'] }}: {{ planet_position['degree'] }} {{ planet_position['retrograde']}}</li>
         {% endfor %}
     </ul>
 

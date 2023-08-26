@@ -1,6 +1,8 @@
 # Импорт необходимых библиотек и модулей
 from flask import Blueprint, jsonify, request
 from app.services.houses import Houses
+from app.services.time_convert import get_time_zone
+from app.services.maps_api import get_coordinates, extract_coordinates
 
 # Создание экземпляра Blueprint для API связанного с информацией о домах
 house_api = Blueprint('house_api', __name__)
@@ -20,7 +22,10 @@ def get_house_info():
     hours = data['hours']
     minute = data['minute']
     place = data['place']
-    timezone = data['timezone']
+    
+    coordinates = get_coordinates(place)
+    latitude, longitude = extract_coordinates(coordinates)
+    timezone = get_time_zone(latitude=latitude, longitude=longitude)
 
     # Создание экземпляра класса Houses для вычисления информации о домах
     house_calculator = Houses(year=year, month=month,
