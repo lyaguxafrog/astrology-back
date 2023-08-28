@@ -59,19 +59,22 @@ class Houses:
 
         # Обход всех систем домов
         for house_system in house_systems:
-            # Получение информации о доме с использованием указанной системы
-            house_info = swe.houses_ex2(tjdut=date, lat=latitude,
-                                        lon=longitude, hsys=house_system,
-                                        flags=0)
-            house_name = self.get_house_name(house=house_system)
+            try:
+                # Получение информации о доме с использованием указанной системы
+                house_info = swe.houses_ex2(tjdut=date, lat=latitude,
+                                            lon=longitude, hsys=house_system,
+                                            flags=0)
+                house_name = self.get_house_name(house=house_system)
 
-            # Создание словаря с информацией о доме
-            house_info_dict = {
-                "system": house_system.decode(),
-                "name": house_name,
-                "info": house_info
-            }
+                # Создание словаря с информацией о доме
+                house_info_dict = {
+                    "system": house_system.decode(),
+                    "name": house_name,
+                    "info": house_info
+                }
 
-            houses_info.append(house_info_dict)
+                houses_info.append(house_info_dict)
+            except:
+                continue
 
         return houses_info
