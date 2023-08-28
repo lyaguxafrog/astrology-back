@@ -11,8 +11,6 @@ load_dotenv(find_dotenv())
 swe.set_ephe_path(os.getenv('EPH_PATH'))
 
 # Определение класса Planets
-
-
 class Planets:
     def __init__(self, year: int, month: int, day: int, hour: int,
                  minute: int, timezone: int) -> None:
@@ -41,10 +39,13 @@ class Planets:
         planet_position = []
 
         # Преобразование входной даты в начальную и следующую даты
-        _isvalid, start_tjd_ut, start_dt = swe.date_conversion(self.year,
-                                                               self.month, self.day, 0.0)
-        _isvalid, next_jid_ut, next_dt = swe.date_conversion(self.year,
-                                                             self.month, self.day + 1, 0.0)
+        start_tjd_ut = get_julian_datetime(year=self.year, month=self.month, 
+                                          day=self.day, 
+                                          hour=self.hour, minute=self.minute)
+
+        next_jid_ut = get_julian_datetime(year=self.year, month=self.month, 
+                                          day=self.day + 1, 
+                                          hour=self.hour, minute=self.minute)
 
         # Перебор идентификаторов планет
         for p in range(swe.SUN, swe.CHIRON + 1):

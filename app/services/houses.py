@@ -1,13 +1,20 @@
 # Импорт необходимых библиотек
 import swisseph as swe
 
+import os
+from dotenv import find_dotenv, load_dotenv
+
 # Импорт функций из других модулей
 from app.services.time_convert import get_julian_datetime, time_zone_convert
 from app.services.maps_api import get_coordinates, extract_coordinates
 
+# Загрузка переменных окружения из файла .env
+load_dotenv(find_dotenv())
+
+# Установка пути к файлам эфемерид
+swe.set_ephe_path(os.getenv('EPH_PATH'))
+
 # Определение класса Houses
-
-
 class Houses:
     def __init__(self, year: int, month: int, day: int,
                  hours: int, minute: int, timezone: int, place: str):
@@ -49,9 +56,7 @@ class Houses:
         houses_info = []
 
         # Преобразование даты и времени в юлианскую дату
-        date = get_julian_datetime(year=self.year, month=self.month,
-                                   day=self.day,
-                                   hour=self.hours, minute=self.minute)
+        date = get_julian_datetime(year=self.year, month=self.month, day=self.day, hour=self.hours, minute=self.minute)
 
         # Получение координат из места
         coordinates = get_coordinates(self.place)
