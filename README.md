@@ -39,7 +39,7 @@
     ```plaintext
     SECRET_KEY='<ваш_секретный_ключ>'               # ключ для шифрования данных (случайный набор символов)
     MAP_API_KEY='<ключ_для_вашего_Yandex_Maps_API>' # (api-ключ для Яндекс.Карт, получается по ссылке ниже)
-    EPH_PATH='<путь_к_эфемеридам_Swiss_Ephemeris>'  # (путь до файлов Эферидам, в проекте уже есть: app/services/eph/se35967s.se1)
+    EPH_PATH='<путь_к_эфемеридам_Swiss_Ephemeris>'  # (путь до файлов Эферидам, в проекте уже есть: app/services/eph/s999980s.se1)
     ```
 
    Получите ключ API от Yandex по этой [ссылке](https://developer.tech.yandex.ru/services).
