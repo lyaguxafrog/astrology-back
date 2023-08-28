@@ -15,9 +15,12 @@
     <ul>
         {% for house_info in houses_info %}
         <li>
-            <h2>{{ house_info['system'] }}</h2>
+            <h2>{{ house_info['system'] }} | {{ house_info['name'] }}</h2>
             <p>Название: {{ house_info['name'] }}</p>
-            <p>Информация: {{ house_info['info'] }}</p>
+            <p>cusps: {{ house_info['cusps'] }}</p>
+            <p>ascmc: {{ house_info['ascmc'] }}</p>
+            <p>cuspsspeed: {{ house_info['cuspsspeed'] }}</p>
+            <p>ascmcspeed: {{ house_info['ascmcspeed'] }}</p>
         </li>
         {% endfor %}
     </ul>

@@ -42,8 +42,8 @@ class Houses:
 
     def get_house(self):
         # Список систем домов
-        house_systems = [b"B", b"Y", b"X", b"H", b"C", b"F", b"A", b"D",
-                         b"N", b"G", b"I", b"i", b"K", b"U", b"M", b"P", b"T",
+        house_systems = [b"P", b"Y", b"X", b"H", b"C", b"F", b"B", b"D",
+                         b"N", b"G", b"I", b"i", b"K", b"U", b"M", b"A", b"T",
                          b"O", b"L", b"Q", b"R", b"S", b"V", b"W"]
 
         houses_info = []
@@ -61,7 +61,8 @@ class Houses:
         for house_system in house_systems:
             try:
                 # Получение информации о доме с использованием указанной системы
-                house_info = swe.houses_ex2(tjdut=date, lat=latitude,
+                cusps, ascmc, cuspsspeed, ascmcspeed = swe.houses_ex2(tjdut=date,
+                                                lat=latitude,
                                             lon=longitude, hsys=house_system,
                                             flags=0)
                 house_name = self.get_house_name(house=house_system)
@@ -70,11 +71,29 @@ class Houses:
                 house_info_dict = {
                     "system": house_system.decode(),
                     "name": house_name,
-                    "info": house_info
+                    "cusps": cusps,
+                    "ascmc": ascmc,
+                    "cuspsspeed": cuspsspeed,
+                    "ascmcspeed": ascmcspeed
                 }
 
                 houses_info.append(house_info_dict)
             except:
-                continue
+                if house_system == b"P" or b"K":
+                    new_house_system = house_system
+                    cusps, ascmc, cuspsspeed, ascmcspeed = swe.houses_ex2(tjdut=date, lat=latitude,
+                                            lon=longitude, hsys=b"D",
+                                            flags=0)
+                    house_name = self.get_house_name(house=new_house_system)
+
+                    house_info_dict = {
+                    "system": house_system.decode(),
+                    "name": house_name,
+                    "cusps": cusps,
+                    "ascmc": ascmc,
+                    "cuspsspeed": cuspsspeed,
+                    "ascmcspeed": ascmcspeed
+                }   
+                    houses_info.append(house_info_dict)
 
         return houses_info
